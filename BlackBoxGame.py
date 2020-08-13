@@ -177,11 +177,11 @@ class Rays:
         if direction == 'UP':
             return self.deflection_while_moving_up(row, column)
         if direction == 'DOWN':
-            pass
+            return self.deflection_while_moving_down(row, column)
         if direction == 'LEFT':
-            pass
+            return self.deflection_while_moving_left(row, column)
         if direction == 'RIGHT':
-            pass
+            return self.deflection_while_moving_right(row, column)
 
     def hit(self, row, column, direction):
         """Returns if the ray entering from (row,column) will hit an atom when heading in a certain direction."""
@@ -260,7 +260,6 @@ class Rays:
             return self.find_exit_position(row,column,'UP')
         else:
             row = deflection_atom[0] + 1
-            column = deflection_atom[1]
             direction = direction_after_detour
             return self.ray_movement(row, column, direction)
 
@@ -291,7 +290,6 @@ class Rays:
             return self.find_exit_position(row,column,'DOWN')
         else:
             row = deflection_atom[0] - 1
-            column = deflection_atom[1]
             direction = direction_after_detour
             return self.ray_movement(row, column, direction)
 
@@ -321,7 +319,6 @@ class Rays:
         if deflection_atom == None:
             return self.find_exit_position(row,column,'LEFT')
         else:
-            row = deflection_atom[0]
             column = deflection_atom[1] + 1
             direction = direction_after_detour
             return self.ray_movement(row, column, direction)
@@ -350,9 +347,8 @@ class Rays:
                     deflection_atom = atom
                 direction_after_detour = 'DOWN'
         if deflection_atom == None:
-            return self.find_exit_position(row,column,'LEFT')
+            return self.find_exit_position(row,column,'RIGHT')
         else:
-            row = deflection_atom[0]
             column = deflection_atom[1] - 1
             direction = direction_after_detour
             return self.ray_movement(row, column, direction)
