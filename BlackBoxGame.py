@@ -19,17 +19,9 @@ class BlackBoxGame:
 
     def __init__(self, list_atoms):
         """
-        Initializes a Black Box Game. The user enters a list of tuples representing atom positions. At each of these
-        locations, 'o' represents the atom on the board. Keeps track of entry positions and exit positions.
-        Sets the player's score to 25.
+        Initializes a Black Box Game. The user enters a list of tuples representing atom positions. Sets the player's
+        score to 25. Sets up Rays and Atom classes.
         """
-
-        # Creates a board with 10 rows and 10 columns
-        self._board = [[' ' for i in range(10)] for j in range(10)]
-
-        # Adds 'o' at each atom location to represent the atom
-        for atom in list_atoms:
-            self._board[atom[0]][atom[1]] = 'o'
 
         # Player starts with 25 points
         self._score = 25
@@ -40,11 +32,6 @@ class BlackBoxGame:
         # Creates atoms with Atom class
         self._my_atoms = Atom(list_atoms)
 
-    def show_board(self):
-        """Prints the board in its current state."""
-        for line in self._board:
-            print(line)
-
     def shoot_ray(self, row, column):
         """
         Allows the user to enter a the position (row and column) of where the ray enters. Returns a tuple of the row
@@ -53,7 +40,7 @@ class BlackBoxGame:
         """
 
         # Check for corner squares
-        if (row == 0 or row ==9) and (column == 0 or column == 9):
+        if (row == 0 or row == 9) and (column == 0 or column == 9):
             return False
 
         # Check for non-border squares
@@ -75,7 +62,7 @@ class BlackBoxGame:
             result = self._my_rays.ray_movement(row, column, 'RIGHT')
         if column == 9:
             result = self._my_rays.ray_movement(row, column, 'LEFT')
-        if result != None:
+        if result is not None:
             if result not in self._my_rays.get_entry_exit_positions():
                 self._my_rays.add_entry_exit_position(result[0], result[1])
                 self.deduct_score(1)
@@ -89,11 +76,12 @@ class BlackBoxGame:
         """
 
         # If guess correctly, remove atom from atom list and when there are no atoms left, player wins
-        if self._board[row][column] == 'o':
-            self._my_atoms.remove_atom(row, column)
-            if self.atoms_left() == 0:
-                return 'Congratulations! You have won the game!'
-            return True
+        for atom in self._my_atoms.get_atoms():
+            if atom == (row, column):
+                self._my_atoms.remove_atom(row, column)
+                if self.atoms_left() == 0:
+                    return 'Congratulations! You have won the game!'
+                return True
 
         # If guess incorrectly, add guess to guess list and deduct score (no deduction for repeat guesses)
         else:
